@@ -10,7 +10,7 @@ pipeline {
     }
     
     environment { 
-        MAVEN_LOCAL_REPO = 'C:/DS/DesignStudioT24-201704.1/t24-binaries'
+        MAVEN_LOCAL_REPO = 'C:/DS/DesignStudioT24-201702.5/t24-binaries'
         T24_HOME_PACKAGE = 'C:/UTP/Daily_UTP_minimal/Temenos/t24home/default/package'
         T24_HOME = 'C:/UTP/Daily_UTP_minimal/Temenos/t24home/default'
         TAFJ_HOME = 'C:/UTP/Daily_UTP_minimal/Temenos/TAFJ'
