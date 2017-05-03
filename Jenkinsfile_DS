@@ -31,11 +31,22 @@ pipeline {
             }
         }
         
-        stage('Unit test') {
+        stage('Unit tests') {
             steps {
                 echo 'Testing..'
             }
         }
+
+        stage('Build IRIS war') {
+            steps {
+               echo 'Building..'
+               
+               bat 'mvn -B -o -f %PACKAGE_PREFIX%-iris-parent/pom.xml -Dmaven.repo.local=%MAVEN_LOCAL_REPO% clean install'
+               
+               step([$class: 'ArtifactArchiver', artifacts: '**/target/*.war', fingerprint: true])
+            }
+        }
+
         
         stage('Deploy DS Package') {
             steps {
