@@ -21,11 +21,21 @@ pipeline {
     }
 
     stages {
+        stage('Clean') {
+            steps {
+               echo 'Cleaning..'
+               
+               bat 'mvn -B -o -f %PACKAGE_PREFIX%-packager/module/pom.xml -Dmaven.repo.local=%MAVEN_LOCAL_REPO% -Dds.ignoreValidationErrors=true clean'
+               
+               bat 'mvn -B -o -f %PACKAGE_PREFIX%-iris-parent/pom.xml -Dmaven.repo.local=%MAVEN_LOCAL_REPO% clean'
+            }
+        } 
+           
         stage('Build DS Package') {
             steps {
                echo 'Building..'
                
-               bat 'mvn -B -o -f %PACKAGE_PREFIX%-packager/module/pom.xml -Dmaven.repo.local=%MAVEN_LOCAL_REPO% -Dds.ignoreValidationErrors=true clean install'
+               bat 'mvn -B -o -f %PACKAGE_PREFIX%-packager/module/pom.xml -Dmaven.repo.local=%MAVEN_LOCAL_REPO% -Dds.ignoreValidationErrors=true install'
                
                step([$class: 'ArtifactArchiver', artifacts: '**/target/*.jar', fingerprint: true])
             }
@@ -41,7 +51,7 @@ pipeline {
             steps {
                echo 'Building..'
                
-               bat 'mvn -B -o -f %PACKAGE_PREFIX%-iris-parent/pom.xml -Dmaven.repo.local=%MAVEN_LOCAL_REPO% clean install'
+               bat 'mvn -B -o -f %PACKAGE_PREFIX%-iris-parent/pom.xml -Dmaven.repo.local=%MAVEN_LOCAL_REPO% install'
                
                step([$class: 'ArtifactArchiver', artifacts: '**/target/*.war', fingerprint: true])
             }
