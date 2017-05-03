@@ -29,18 +29,12 @@
         </plugins>
     </build>
     <dependencies>
-        <dependency>
-            <groupId>com.odcgroup.tafj.package</groupId>
-            <artifactId>ft-modelbank-data-code</artifactId>
-            <version>${project.version}</version>
-            <type>tafj-project</type>
-        </dependency>
-        <dependency>
-            <groupId>com.odcgroup.tafj.package</groupId>
-            <artifactId>ft-modelbank-models-gen</artifactId>
-            <version>${project.version}</version>
-            <type>ds-generated</type>
-            <classifier>xmlt24i</classifier>
-        </dependency>
+	    <dependency>
+	    	<groupId>com.temenos.ds.models</groupId>
+	    	<artifactId>Prospect-models-gen</artifactId>
+	    	<version>201704.0.0.20170411022334</version>
+	    	<type>ds-generated</type>
+	    	<classifier>xmlt24i</classifier>
+	    </dependency>
     </dependencies>
 </project>

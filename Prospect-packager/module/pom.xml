@@ -15,10 +15,7 @@
     
     <modules>
         <module>..</module>
-         
-         
-         
-         <module>../Prospect-models</module>
-         <module>../Prospect-models-gen</module>
+         <module>../../Prospect-models</module>
+         <module>../../Prospect-models-gen</module>
     </modules>
 </project>
