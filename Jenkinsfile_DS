@@ -21,7 +21,7 @@ pipeline {
     }
 
     stages {
-        stage('Build') {
+        stage('Build DS Package') {
             steps {
                echo 'Building..'
                
@@ -31,13 +31,13 @@ pipeline {
             }
         }
         
-        stage('Test') {
+        stage('Unit test') {
             steps {
                 echo 'Testing..'
             }
         }
         
-        stage('Deploy') {
+        stage('Deploy DS Package') {
             steps {
                 echo 'Deploying....'    
 
@@ -48,16 +48,23 @@ pipeline {
                 echo 'Installation - phase 1 - T24PackageInstaller'
             
                 bat '''
-                   call "C:\\UTP\\shell\\setenv.cmd"
+                   call "C:\\UTP\\shell\\setenv-1.8.cmd"
                    tRun.bat -cf tafj T24PackageInstaller
                 '''
                 
                 echo 'Installation - phase 2 - packageDataInstaller'
                 bat returnStatus: true, script: '''
-                    call "C:\\UTP\\shell\\setenv.cmd"
+                    call "C:\\UTP\\shell\\setenv-1.8.cmd"
                     tRun.bat -cf tafj packageDataInstaller
                 '''
             }
         }
+        
+        stage('Integration test') {
+            steps {
+                echo 'Testing on server..'
+            }
+        }
+        
     }
 }
