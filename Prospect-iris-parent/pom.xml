@@ -5,7 +5,7 @@
     <parent>
        <groupId>com.temenos.maven</groupId>
        <artifactId>t24-core</artifactId>
-       <version>201704.0.0.20170411022334</version>
+       <version>201702.0.0-SNAPSHOT</version>
     </parent>
 
     <groupId>com.temenos.examples</groupId>
@@ -19,8 +19,8 @@
         <skipITs>true</skipITs>
         <skipTest>false</skipTest>
         <spring.version>3.2.13.RELEASE</spring.version>
-        <iris.version>0.13.8</iris.version>
-        <t24AdapterForIrisVersion>201702.0.0</t24AdapterForIrisVersion>        
+        <iris.version>0.13.11</iris.version>
+        <t24AdapterForIrisVersion>201702.0.5</t24AdapterForIrisVersion>        
         <t24ResourceProviderVersion>201702.0.0</t24ResourceProviderVersion>
         <t24CatalogServiceVersion>201702.0.0</t24CatalogServiceVersion>
          <!-- Technology dependency-->       
