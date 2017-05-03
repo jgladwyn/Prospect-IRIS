@@ -37,12 +37,12 @@
 		<dependency>
 			<groupId>com.temenos.interaction</groupId>
 			<artifactId>interaction-core</artifactId>
-			<version>0.13.8</version>
+			<version>0.14.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.temenos.interaction</groupId>
 			<artifactId>interaction-commands-odata</artifactId>
-			<version>0.13.8</version>
+			<version>0.14.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.odata4j</groupId>
