@@ -1,0 +1,63 @@
+#!/usr/bin/env groovy
+
+pipeline {
+    agent any
+
+    tools { 
+        maven 'Maven 3.3.9' 
+        jdk 'JDK 1.8' 
+        git 'GIT'
+    }
+    
+    environment { 
+        MAVEN_LOCAL_REPO = 'C:/DS/DesignStudioT24-201704.1/t24-binaries'
+        T24_HOME_PACKAGE = 'C:/UTP/Daily_UTP_minimal/Temenos/t24home/default/package'
+        T24_HOME = 'C:/UTP/Daily_UTP_minimal/Temenos/t24home/default'
+        TAFJ_HOME = 'C:/UTP/Daily_UTP_minimal/Temenos/TAFJ'
+        JAVA_HOME = 'C:/UTP/Daily_UTP_minimal/Temenos/java/jdk-7u76-windows-x64'
+        
+        PACKAGE_PREFIX = 'Prospect'
+        
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+               echo 'Building..'
+               
+               bat 'mvn -B -o -f %PACKAGE_PREFIX%-packager/module/pom.xml -Dmaven.repo.local=%MAVEN_LOCAL_REPO% -Dds.ignoreValidationErrors=true clean install'
+               
+               step([$class: 'ArtifactArchiver', artifacts: '**/target/*.jar', fingerprint: true])
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                echo 'Testing..'
+            }
+        }
+        
+        stage('Deploy') {
+            steps {
+                echo 'Deploying....'    
+
+                echo "Copy package to %T24_HOME_PACKAGE%"
+
+                bat 'copy .\\%PACKAGE_PREFIX%-packager\\target\\R17**.jar \"%T24_HOME_PACKAGE%\" /Y'
+
+                echo 'Installation - phase 1 - T24PackageInstaller'
+            
+                bat '''
+                   call "C:\\UTP\\shell\\setenv.cmd"
+                   tRun.bat -cf tafj T24PackageInstaller
+                '''
+                
+                echo 'Installation - phase 2 - packageDataInstaller'
+                bat returnStatus: true, script: '''
+                    call "C:\\UTP\\shell\\setenv.cmd"
+                    tRun.bat -cf tafj packageDataInstaller
+                '''
+            }
+        }
+    }
+}
