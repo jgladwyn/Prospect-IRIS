@@ -62,7 +62,7 @@ Fields {
         }
 
         Translations:
-            label: en = "Curr Number"
+            label: en = "Curr Number2"
     }
 
     "INPUTTER" {
