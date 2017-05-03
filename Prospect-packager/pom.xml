@@ -21,7 +21,7 @@
                 <configuration>
                     <type>TAFJ</type>
                     <release>R17</release>
-                    <componentName>FT_Modelbank</componentName>
+                    <componentName>L3_Prospect</componentName>
                     <rev>1</rev>
                     <version>17.0</version>
                 </configuration>
