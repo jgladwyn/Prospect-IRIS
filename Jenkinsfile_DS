@@ -58,26 +58,12 @@ pipeline {
         }
 
         
-        stage('Deploy DS Package') {
+        stage('Deploy DS Package to Cloud test env') {
             steps {
                 echo 'Deploying....'    
 
                 echo "Copy package to %T24_HOME_PACKAGE%"
 
-                bat 'copy .\\%PACKAGE_PREFIX%-packager\\target\\R17**.jar \"%T24_HOME_PACKAGE%\" /Y'
-
-                echo 'Installation - phase 1 - T24PackageInstaller'
-            
-                bat '''
-                   call "C:\\UTP\\shell\\setenv-1.8.cmd"
-                   tRun.bat -cf tafj T24PackageInstaller
-                '''
-                
-                echo 'Installation - phase 2 - packageDataInstaller'
-                bat returnStatus: true, script: '''
-                    call "C:\\UTP\\shell\\setenv-1.8.cmd"
-                    tRun.bat -cf tafj packageDataInstaller
-                '''
             }
         }
         
