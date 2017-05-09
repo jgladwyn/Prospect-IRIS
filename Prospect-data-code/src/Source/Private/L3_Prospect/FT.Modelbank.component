@@ -1,0 +1,12 @@
+component FT.Validation
+# Component Isolation Definition
+metamodelVersion 1.6
+# -------------------------------------------------
+
+module method OperationName 
+(
+    IN ArgumentName string [0..1]
+)
+{
+    jBC: V.FT.VALIDATION
+}

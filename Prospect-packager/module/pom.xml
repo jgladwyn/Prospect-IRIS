@@ -15,6 +15,7 @@
     
     <modules>
         <module>..</module>
+        <module>../../Prospect-data-code</module>
          <module>../../Prospect-models</module>
          <module>../../Prospect-models-gen</module>
     </modules>

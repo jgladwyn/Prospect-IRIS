@@ -29,6 +29,12 @@
         </plugins>
     </build>
     <dependencies>
+        <dependency>
+            <groupId>com.odcgroup.tafj.package</groupId>
+            <artifactId>Prospect-data-code</artifactId>
+            <version>${project.version}</version>
+            <type>tafj-project</type>
+        </dependency>    
 	    <dependency>
 	    	<groupId>com.temenos.ds.models</groupId>
 	    	<artifactId>Prospect-models-gen</artifactId>
