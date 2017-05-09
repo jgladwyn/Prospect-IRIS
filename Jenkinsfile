@@ -60,7 +60,7 @@ pipeline {
                 echo 'Deploying....'    
                 
                 dir('remote-cloud-t24') {
-                    git branch: 'demo_santander', url: 'C:\\workspace\\DS-Packager\\prospect-iris1-201702\\cloud-david-t24'
+                    git url: 'https://gitlab.temenos.cloud/1bm2kcjgf09og/corebanking/'
                 }
                 
                 // bat 'mkdir remotegit'
@@ -83,7 +83,7 @@ pipeline {
                     bat "git --git-dir=remote-cloud-t24/.git --work-tree=remote-cloud-t24 commit -m\"New DS package\""
 
                     // push changes                    
-                    bat "git --git-dir=remote-cloud-t24/.git --work-tree=remote-cloud-t24 push --set-upstream origin demo_santander"
+                    bat "git --git-dir=remote-cloud-t24/.git --work-tree=remote-cloud-t24 push --set-upstream origin master"
                 }                
 
             }
