@@ -19,8 +19,42 @@ pipeline {
         PACKAGE_PREFIX = 'Prospect'
         
     }
-
     stages {
+    
+
+        stage('Clean') {
+            steps {
+               echo 'Cleaning..'
+               
+               bat 'mvn -B -o -f %PACKAGE_PREFIX%-packager/module/pom.xml -Dmaven.repo.local=%MAVEN_LOCAL_REPO% -Dds.ignoreValidationErrors=true clean'
+               
+               bat 'mvn -B -o -f %PACKAGE_PREFIX%-iris-parent/pom.xml -Dmaven.repo.local=%MAVEN_LOCAL_REPO% clean'
+            }
+        } 
+           
+        stage('Build DS Package') {
+            steps {
+               echo 'Building..'
+               
+               bat 'mvn -B -o -f %PACKAGE_PREFIX%-packager/module/pom.xml -Dmaven.repo.local=%MAVEN_LOCAL_REPO% -Dds.ignoreValidationErrors=true install'
+               
+               step([$class: 'ArtifactArchiver', artifacts: '**/target/*.jar', fingerprint: true])
+            }
+        }
+        
+        stage('Unit tests') {
+            steps {
+                echo 'Testing..'
+            }
+        }
+
+        
+        stage('Integration test') {
+            steps {
+                echo 'Testing on server..'
+            }
+        }
+ 
         stage('Deploy DS Package to Cloud test env') {
             steps {
                 echo 'Deploying....'    
@@ -48,13 +82,15 @@ pipeline {
                     echo 'Git commands....'
                     bat "git --git-dir=remote-cloud-t24/.git --work-tree=remote-cloud-t24 add *.jar"
                     
+                    bat "git config --global user.name \"davag\""
+                    bat "git config --global user.email \"daguirre@temenos.com\""
+                    
                     bat "git --git-dir=remote-cloud-t24/.git --work-tree=remote-cloud-t24 commit -m\"New DS package\""
                     
-                    bat "git --git-dir=remote-cloud-t24/.git --work-tree=remote-cloud-t24 push origin demo_santander"
+                    bat "git --git-dir=remote-cloud-t24/.git --work-tree=remote-cloud-t24 push origin master"
                 }                
 
             }
-        }    
-           
+        }  
     }
 }
