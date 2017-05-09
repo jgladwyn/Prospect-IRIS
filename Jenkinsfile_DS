@@ -21,6 +21,41 @@ pipeline {
     }
 
     stages {
+        stage('Deploy DS Package to Cloud test env') {
+            steps {
+                echo 'Deploying....'    
+                
+                dir('remote-cloud-t24') {
+                        git url: 'file:/C:/workspace/DS-Packager/prospect-iris1-201702/cloud-david-t24'
+                }
+                
+                // bat 'mkdir remotegit'
+                echo "${env.WORKSPACE}"
+                
+                // git url: "C:/workspace/DS-Packager/prospect-iris1-201702/cloud-david-t24"
+                // git clone "C:/workspace/DS-Packager/prospect-iris1-201702/cloud-david-t24"                 
+
+                
+                echo 'Deploying....'
+
+                echo 'Try to copy files ....'
+
+                bat "xcopy xxx-packager\\target\\*.jar remote-cloud-t24\\packages /Y"
+
+                echo 'Copy files done....'
+
+                withEnv(["PATH+GIT=C:\\apps\\git\\bin"]) {
+                    echo 'Git commands....'
+                    // bat "git --git-dir=remote-cloud-t24/.git --work-tree=remote-cloud-t24 add *.jar"
+                    
+                    // bat "git --git-dir=remote-cloud-t24/.git --work-tree=remote-cloud-t24 commit -m\"Sample commit\""
+                    
+                    // bat "git --git-dir=remote-cloud-t24/.git --work-tree=remote-cloud-t24 push origin master"
+                }                
+
+            }
+        }    
+    
         stage('Clean') {
             steps {
                echo 'Cleaning..'
@@ -58,14 +93,7 @@ pipeline {
         }
 
         
-        stage('Deploy DS Package to Cloud test env') {
-            steps {
-                echo 'Deploying....'    
 
-                echo "Copy package to %T24_HOME_PACKAGE%"
-
-            }
-        }
         
         stage('Integration test') {
             steps {
