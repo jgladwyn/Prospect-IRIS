@@ -40,7 +40,7 @@ pipeline {
 
                 echo 'Try to copy files ....'
 
-                bat "xcopy xxx-packager\\target\\*.jar remote-cloud-t24\\packages /Y"
+                bat "xcopy %PACKAGE_PREFIX%-packager\\target\\*.jar remote-cloud-t24\\packages /Y"
 
                 echo 'Copy files done....'
 
