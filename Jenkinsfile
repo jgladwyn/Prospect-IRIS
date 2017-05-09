@@ -21,7 +21,7 @@ pipeline {
     }
     stages {
     
-         stage('Deploy Cloud test env (DS Package + IRIS war)') {
+         stage('Deploy to GitLab (DS Package + IRIS war)') {
             steps {
                 echo 'Deploying....'    
                 echo "${env.WORKSPACE}"
@@ -46,8 +46,9 @@ pipeline {
                     bat "git config --global user.email \"daguirre@temenos.com\""
                     bat "git config --global push.default simple"
 
-                    // add jar + commit
+                    // add jar/war + commit
                     bat "git --git-dir=remote-cloud-t24/.git --work-tree=remote-cloud-t24 add *.jar"
+                    bat "git --git-dir=remote-cloud-t24/.git --work-tree=remote-cloud-t24 add *.war"
                     bat "git --git-dir=remote-cloud-t24/.git --work-tree=remote-cloud-t24 commit -m\"New DS package\""
 
                     // push changes                    
