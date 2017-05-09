@@ -21,7 +21,33 @@ pipeline {
     }
     stages {
     
+       stage('Clean') {
+            steps {
+               echo 'Cleaning..'
+               
+               bat 'mvn -B -o -f %PACKAGE_PREFIX%-packager/module/pom.xml -Dmaven.repo.local=%MAVEN_LOCAL_REPO% -Dds.ignoreValidationErrors=true clean'
+               
+               bat 'mvn -B -o -f %PACKAGE_PREFIX%-iris-parent/pom.xml -Dmaven.repo.local=%MAVEN_LOCAL_REPO% clean'
+            }
+        } 
+           
+        stage('Build DS Package') {
+            steps {
+               echo 'Building..'
+               
+               bat 'mvn -B -o -f %PACKAGE_PREFIX%-packager/module/pom.xml -Dmaven.repo.local=%MAVEN_LOCAL_REPO% -Dds.ignoreValidationErrors=true install'
+               
+               step([$class: 'ArtifactArchiver', artifacts: '**/target/*.jar', fingerprint: true])
+            }
+        }
+        
+        stage('Unit tests') {
+            steps {
+                echo 'Testing..'
+            }
+        }
 
+        
        stage('Deploy DS Package to Cloud test env') {
             steps {
                 echo 'Deploying....'    
@@ -53,5 +79,12 @@ pipeline {
 
             }
         }  
+        
+        stage('Integration test') {
+            steps {
+                echo 'Testing on server..'
+            }
+        }
+        
     }
 }
