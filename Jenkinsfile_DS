@@ -82,7 +82,7 @@ pipeline {
                     bat "git --git-dir=remote-cloud-t24/.git --work-tree=remote-cloud-t24 add *.jar"
                     bat "git --git-dir=remote-cloud-t24/.git --work-tree=remote-cloud-t24 commit -m\"New DS package\""
 
-                    // push changaes                    
+                    // push changes                    
                     bat "git --git-dir=remote-cloud-t24/.git --work-tree=remote-cloud-t24 push --set-upstream origin demo_santander"
                 }                
 
