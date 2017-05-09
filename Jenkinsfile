@@ -46,9 +46,19 @@ pipeline {
                 echo 'Testing..'
             }
         }
+        
+        stage('Build IRIS war') {
+            steps {
+               echo 'Building..'
+               
+               bat 'mvn -B -o -f %PACKAGE_PREFIX%-iris-parent/pom.xml -Dmaven.repo.local=%MAVEN_LOCAL_REPO% install'
+               
+               step([$class: 'ArtifactArchiver', artifacts: '**/target/*.war', fingerprint: true])
+            }
+        }       
 
         
-       stage('Deploy DS Package to Cloud test env') {
+       stage('Deploy Cloud test env (DS Package + IRIS war)') {
             steps {
                 echo 'Deploying....'    
                 echo "${env.WORKSPACE}"
