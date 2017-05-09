@@ -55,39 +55,35 @@ pipeline {
             }
         }
  
-        stage('Deploy DS Package to Cloud test env') {
+   stage('Deploy DS Package to Cloud test env') {
             steps {
                 echo 'Deploying....'    
                 
                 dir('remote-cloud-t24') {
-                        git url: 'file:/C:/workspace/DS-Packager/prospect-iris1-201702/cloud-david-t24'
+                    git branch: 'demo_santander', url: 'C:\\workspace\\DS-Packager\\prospect-iris1-201702\\cloud-david-t24'
                 }
                 
                 // bat 'mkdir remotegit'
                 echo "${env.WORKSPACE}"
-                
-                // git url: "C:/workspace/DS-Packager/prospect-iris1-201702/cloud-david-t24"
-                // git clone "C:/workspace/DS-Packager/prospect-iris1-201702/cloud-david-t24"                 
 
-                
-                echo 'Deploying....'
-
-                echo 'Try to copy files ....'
+                echo 'Copy Package ....'
 
                 bat "xcopy %PACKAGE_PREFIX%-packager\\target\\*.jar remote-cloud-t24\\packages /Y"
 
-                echo 'Copy files done....'
-
                 withEnv(["PATH+GIT=C:\\apps\\git\\bin"]) {
                     echo 'Git commands....'
-                    bat "git --git-dir=remote-cloud-t24/.git --work-tree=remote-cloud-t24 add *.jar"
                     
-                    bat "git config --global user.name \"davag\""
+                    // setup git config
+                    bat "git config --global user.name \"David Aguirre\""
                     bat "git config --global user.email \"daguirre@temenos.com\""
-                    
+                    bat "git config --global push.default simple"
+
+                    // add jar + commit
+                    bat "git --git-dir=remote-cloud-t24/.git --work-tree=remote-cloud-t24 add *.jar"
                     bat "git --git-dir=remote-cloud-t24/.git --work-tree=remote-cloud-t24 commit -m\"New DS package\""
-                    
-                    bat "git --git-dir=remote-cloud-t24/.git --work-tree=remote-cloud-t24 push origin master"
+
+                    // push changaes                    
+                    bat "git --git-dir=remote-cloud-t24/.git --work-tree=remote-cloud-t24 push --set-upstream origin demo_santander"
                 }                
 
             }
