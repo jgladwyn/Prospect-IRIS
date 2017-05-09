@@ -60,7 +60,7 @@ pipeline {
                 echo 'Deploying....'    
                 
                 dir('remote-cloud-t24') {
-                    git url: 'https://gitlab.temenos.cloud/1bm2kcjgf09og/corebanking/'
+                    bat "git clone https://1bm2kcjgf09og:12AB3NzaC1yc2EAfra@gitlab.temenos.cloud/1bm2kcjgf09og/corebanking/ ."
                 }
                 
                 // bat 'mkdir remotegit'
