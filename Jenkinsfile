@@ -21,6 +21,42 @@ pipeline {
     }
     stages {
     
+      stage('Clean') {
+            steps {
+               echo 'Cleaning..'
+               
+               bat 'mvn -B -o -f %PACKAGE_PREFIX%-packager/module/pom.xml -Dmaven.repo.local=%MAVEN_LOCAL_REPO% -Dds.ignoreValidationErrors=true clean'
+               
+               bat 'mvn -B -o -f %PACKAGE_PREFIX%-iris-parent/pom.xml -Dmaven.repo.local=%MAVEN_LOCAL_REPO% clean'
+            }
+        } 
+           
+        stage('Build DS Package') {
+            steps {
+               echo 'Building..'
+               
+               bat 'mvn -B -o -f %PACKAGE_PREFIX%-packager/module/pom.xml -Dmaven.repo.local=%MAVEN_LOCAL_REPO% -Dds.ignoreValidationErrors=true install'
+               
+               step([$class: 'ArtifactArchiver', artifacts: '**/target/*.jar', fingerprint: true])
+            }
+        }
+        
+        stage('Unit tests') {
+            steps {
+                echo 'Testing..'
+            }
+        }
+        
+        stage('Build IRIS war') {
+            steps {
+               echo 'Building..'
+               
+               bat 'mvn -B -o -f %PACKAGE_PREFIX%-iris-parent/pom.xml -Dmaven.repo.local=%MAVEN_LOCAL_REPO% install'
+               
+               step([$class: 'ArtifactArchiver', artifacts: '**/target/*.war', fingerprint: true])
+            }
+        }       
+    
          stage('Deploy to GitLab (DS Package + IRIS war)') {
             steps {
                 echo 'Deploying....'    
@@ -49,7 +85,7 @@ pipeline {
                     // add jar/war + commit
                     bat "git --git-dir=remote-cloud-t24/.git --work-tree=remote-cloud-t24 add *.jar"
                     bat "git --git-dir=remote-cloud-t24/.git --work-tree=remote-cloud-t24 add *.war"
-                    bat "git --git-dir=remote-cloud-t24/.git --work-tree=remote-cloud-t24 commit -m\"New DS package\""
+                    bat "git --git-dir=remote-cloud-t24/.git --work-tree=remote-cloud-t24 commit -m\"New build\""
 
                     // push changes                    
                     bat "git --git-dir=remote-cloud-t24/.git --work-tree=remote-cloud-t24 push --set-upstream origin master"
@@ -58,6 +94,11 @@ pipeline {
             }
         }  
         
+        stage('Integration test') {
+            steps {
+                echo 'Testing on server..'
+            }
+        }        
          
     }
 }
