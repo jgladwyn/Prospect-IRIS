@@ -22,55 +22,20 @@ pipeline {
     stages {
     
 
-        stage('Clean') {
-            steps {
-               echo 'Cleaning..'
-               
-               bat 'mvn -B -o -f %PACKAGE_PREFIX%-packager/module/pom.xml -Dmaven.repo.local=%MAVEN_LOCAL_REPO% -Dds.ignoreValidationErrors=true clean'
-               
-               bat 'mvn -B -o -f %PACKAGE_PREFIX%-iris-parent/pom.xml -Dmaven.repo.local=%MAVEN_LOCAL_REPO% clean'
-            }
-        } 
-           
-        stage('Build DS Package') {
-            steps {
-               echo 'Building..'
-               
-               bat 'mvn -B -o -f %PACKAGE_PREFIX%-packager/module/pom.xml -Dmaven.repo.local=%MAVEN_LOCAL_REPO% -Dds.ignoreValidationErrors=true install'
-               
-               step([$class: 'ArtifactArchiver', artifacts: '**/target/*.jar', fingerprint: true])
-            }
-        }
-        
-        stage('Unit tests') {
-            steps {
-                echo 'Testing..'
-            }
-        }
-
-        
-        stage('Integration test') {
-            steps {
-                echo 'Testing on server..'
-            }
-        }
- 
-   stage('Deploy DS Package to Cloud test env') {
+       stage('Deploy DS Package to Cloud test env') {
             steps {
                 echo 'Deploying....'    
-                
-                dir('remote-cloud-t24') {
-                    bat "git clone https://1bm2kcjgf09og:12AB3NzaC1yc2EAfra@gitlab.temenos.cloud/1bm2kcjgf09og/corebanking/ ."
-                }
-                
-                // bat 'mkdir remotegit'
                 echo "${env.WORKSPACE}"
 
-                echo 'Copy Package ....'
-
-                bat "xcopy %PACKAGE_PREFIX%-packager\\target\\*.jar remote-cloud-t24\\packages /Y"
 
                 withEnv(["PATH+GIT=C:\\apps\\git\\bin"]) {
+                    dir('remote-cloud-t24') {
+                        bat "git clone https://1bm2kcjgf09og:12AB3NzaC1yc2EAfra@gitlab.temenos.cloud/1bm2kcjgf09og/corebanking/ ."
+                    }
+                    echo 'Copy Package ....'
+    
+                    bat "xcopy %PACKAGE_PREFIX%-packager\\target\\*.jar remote-cloud-t24\\packages /Y"
+                
                     echo 'Git commands....'
                     
                     // setup git config
