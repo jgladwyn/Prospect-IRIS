@@ -56,6 +56,7 @@ pipeline {
 
                 withEnv(["PATH+GIT=C:\\apps\\git\\bin"]) {
                     dir('remote-cloud-t24') {
+                        deleteDir()
                         bat "git clone https://1bm2kcjgf09og:12AB3NzaC1yc2EAfra@gitlab.temenos.cloud/1bm2kcjgf09og/corebanking/ ."
                     }
                     echo 'Copy Package ....'
