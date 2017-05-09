@@ -46,7 +46,7 @@ pipeline {
 
                 withEnv(["PATH+GIT=C:\\apps\\git\\bin"]) {
                     echo 'Git commands....'
-                    // bat "git --git-dir=remote-cloud-t24/.git --work-tree=remote-cloud-t24 add *.jar"
+                    bat "git --git-dir=remote-cloud-t24/.git --work-tree=remote-cloud-t24 add *.jar"
                     
                     // bat "git --git-dir=remote-cloud-t24/.git --work-tree=remote-cloud-t24 commit -m\"Sample commit\""
                     
